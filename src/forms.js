@@ -1,3 +1,5 @@
+
+
 const handleFillCountry = _.debounce((ev) => {
     // only show matched events
 
@@ -22,24 +24,56 @@ function validateName(event) {
     const name = event.target.value
     console.log('validate name: ' + name);
 
-    return false
+    if(name.length < 8 || name == ""){
+        hideElementWithClassName(event.target, 'valid-feedback')
+        showElementWithClassName(event.target, 'invalid-feedback')
+        return false
+    }
+    else{
+        showElementWithClassName(event.target, 'valid-feedback')
+        hideElementWithClassName(event.target, 'invalid-feedback')
+        return true
+    }
 }
 
 function validatePassword(event) {
+    const password = event.target.value
+    console.log('validate password:' + password);
+
+    if(password.length < 8 || password == ""){
+        hideElementWithClassName(event.target, 'valid-feedback')
+        showElementWithClassName(event.target, 'invalid-feedback')
+        return false
+    }
+    else{
+        showElementWithClassName(event.target, 'valid-feedback')
+        hideElementWithClassName(event.target, 'invalid-feedback')
+        return true
+    }
+}
+
     // password should be at least 8 of length
     // should contains at least one lower letter
     // should contains at least one capital letter
     // should contains at least one number
     // otherwise, password is invalid
-    const password = event.target.value
-    return false
-}
+
 
 function validateEmail(event) {
     const email = event.target.value
 
-    return false
+    if(email.length == "" || !email.includes ("@") || email.startsWith ("@")){
+        hideElementWithClassName(event.target, 'valid-feedback')
+        showElementWithClassName(event.target, 'invalid-feedback')
+        return true
+    }
+    else{
+        showElementWithClassName(event.target, 'valid-feedback')
+        hideElementWithClassName(event.target, 'invalid-feedback')
+        return false
+    }
 }
+
 
 
 // general register
@@ -50,6 +84,17 @@ function register(event) {
     // check if gender is selected
     // check if checkbox with "I confirm that all data are correct" is checked
 
+    const confirm = event.target.value
+    if (confirm.value == true){
+        hideElementWithClassName(event.target, 'valid-feedback')
+        showElementWithClassName(event.target, 'invalid-feedback')
+        return true
+    }
+    else{
+        showElementWithClassName(event.target, 'valid-feedback')
+        hideElementWithClassName(event.target, 'invalid-feedback')
+        return false
+    }
 
     // then, send a POST to localhost:3000/register with all the data in the body as a JSON
     fetch('http://localhost:3000/', {
@@ -79,6 +124,8 @@ function selectCountry(event) {
     const node = document.getElementsByClassName('search-box')[0]
     node.style.display = 'none'
     node.innerHTML = ''
+
+    showElementWithClassName(event.target,'invalid-feedback')
 }
 
 function init() {
